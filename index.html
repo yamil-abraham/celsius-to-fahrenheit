@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://us.123rf.com/450wm/alhovik/alhovik1507/alhovik150700032/42791914-celsius-estilo-plano-y-term%C3%B3metros-fahrenheit.jpg?ver=6">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://us.123rf.com/450wm/alhovik/alhovik1507/alhovik150700032/42791914-celsius-estilo-plano-y-term%C3%B3metros-fahrenheit.jpg?ver=6">
+    <title>Celsius to Fahrenheit Degrees</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <style>
+      #result {
+        font-weight:  bold;
+        font-size:  1.2rem;
+        text-align: center;
+      }
+    </style>
+
+</head>
+<body>
+    
+<main>
+   <div class="px-4 py-2 my-2 text-center border-bottom">
+        <img class="d-block mx-auto mb-2" src="https://us.123rf.com/450wm/alhovik/alhovik1507/alhovik150700032/42791914-celsius-estilo-plano-y-term%C3%B3metros-fahrenheit.jpg?ver=6" alt="" width="80" height="80">
+        <h1 class="display-5 fw-bold">Celsius to Fahrenheit Degrees</h1>
+        <div class="col-lg-6 mx-auto">
+            <p class="lead mb-0">Celsius to Fahrenheit Degrees Converter with Tensorflow.js</p>
+        </div>
+   </div>
+
+   <div class="b-example-divider"></div>
+
+    <div class="container mt-5">
+        <div class="row">
+          <div class="col-12 col-md-4 offset-md-4">
+            <form>
+                <div class="mb-3">
+                      <label for="celsius" class="form-label">Celsius Degrees: <span id="lbl-celsius">0</span></label>
+                      <input type="range" class="form-range" min="-200" max="200" id="celsius" oninput="convertToCelsius();">
+                      <div class="form-text">Use the slider to changing the input value</div>
+                </div>
+              <div class="mb-3">
+                    <label for="celsius" class="form-label">Result</label>
+                    <div id="result">
+                        0 Celsius degrees are 32 Fahrenheit degrees
+                    </div>
+              </div>
+            </form>
+          </div>
+        </div>
+    </div>
+
+    <div class="b-example-divider"></div>
+
+      <div class="bg-dark text-secondary mt-5 px-4 py-2 text-center">
+          <div class="py-5">
+              <h1 class="display-5 fw-bold text-white">APP</h1>
+              <div class="col-lg-6 mx-auto">
+              </div>
+          </div>
+      </div>
+
+      <div class="b-example-divider mb-0"></div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+
+<script type="text/javascript">
+
+      var model = null;
+
+      //Loading the model
+      (async () => {
+          console.log("Loading the model...");
+          model = await tf.loadLayersModel("model.json");
+          console.log("Model loaded...");
+      })();
+
+      function convertToCelsius() {
+        var celsius = document.getElementById("celsius").value;
+        document.getElementById("lbl-celsius").innerHTML=celsius;
+        if (model != null) {
+          var tensor = tf.tensor1d([parseInt(celsius)]);
+          var prediction = model.predict(tensor).dataSync();
+          prediction = Math.round(prediction, 1);
+          document.getElementById("result").innerHTML = celsius + " celsius degrees are " + prediction + " fahrenheit degrees!";
+        } else {
+          document.getElementById("result").innerHTML = "Tray again in a few minutes...";
+        }
+      }
+    </script>
+</body>
+</html>
